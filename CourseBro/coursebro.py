@@ -32,7 +32,7 @@ def capture(df):
     driver = webdriver.Chrome(executable_path=r"E:\Coursebro\chromedriver", options = chrome_option)
     driver.get(url)
     driver.maximize_window()
-    current_url_str = 'https://passportyork.yorku.ca/ppylogin/ppylogin'
+    current_url_str = 'https://schedulebuilder.yorku.ca'
     current_url = driver.current_url 
     
     #load pickle cookies object to the browser drive, if it's the first time and has no cookies, skip and wait for cookies dumping
