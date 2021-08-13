@@ -21,7 +21,7 @@ echo.rate = 4 #-1
 
 
 
-def capture():
+def capture(df):
     #Options
     chrome_option = Options()
     #chrome_option.add_argument('--headless')
@@ -39,8 +39,10 @@ def capture():
     driver = webdriver.Chrome(executable_path="E:\\Coursebro\\chromedriver.exe", options = chrome_option)
     driver.get(url)
     driver.maximize_window()
-    current_url_str = 'https://schedulebuilder.yorku.ca'
-    current_url = driver.current_url 
+    logInSystem(driver)
+
+    if driver.current_url == url:
+        driver.get(df.url)
     
     #load pickle cookies object to the browser drive, if it's the first time and has no cookies, skip and wait for cookies dumping
     # try:
@@ -50,6 +52,37 @@ def capture():
     #         driver.add_cookie(cookie)
     # except:
     #     pass
+    #how to pass security authentications 
+    #driver.execute_script("var a = prompt('Enter Security Code', 'Pass');document.body.setAttribute('data-id', a)")
+    #time.sleep(60)  #the prompt will last for 60 seconds for the user to input pass code
+    #passcode = driver.find_element_by_tag_name('body').get_attribute('data-id')  # get the input
+    #under if statement, grab the passcode xpath, use variable passcode and submit form to pass authentication
+
+    #func body,successfully entered the schedule builder from here
+
+
+
+
+
+
+
+
+
+    #func body ends here
+
+    #dump cookies for next process to use
+    #pickle.dump( driver.get_cookies() , open("cookies.pkl","wb"))
+
+
+
+
+
+
+    
+    #return 0
+
+
+def logInSystem(driver):
     PassportUsername = "zhx1997"
     PassportPassword = "Niyoyo1201!!"
     wait = WebDriverWait(driver,30)
@@ -71,34 +104,6 @@ def capture():
     time.sleep(2)
     LoginButtonElement.click()
     time.sleep(30)
-
-
-    #func body
-
-
-    #how to pass security authentications 
-    #driver.execute_script("var a = prompt('Enter Security Code', 'Pass');document.body.setAttribute('data-id', a)")
-    #time.sleep(60)  #the prompt will last for 60 seconds for the user to input pass code
-    #passcode = driver.find_element_by_tag_name('body').get_attribute('data-id')  # get the input
-
-    #under if statement, grab the passcode xpath, use variable passcode and submit form to pass authentication
-
-
-
-
-
-    #func body ends here
-
-    #dump cookies for next process to use
-    #pickle.dump( driver.get_cookies() , open("cookies.pkl","wb"))
-
-
-
-
-
-
-    
-    #return 0
 
 def runScrap():
     return 0

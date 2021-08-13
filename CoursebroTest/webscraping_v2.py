@@ -117,6 +117,7 @@ def capture(df):
 def webscraping():
     t0 = time.time()
     course_file = 'C:/Users/Tom/Desktop/tcl/test.csv'
+    #dataframe build
     df = pd.read_csv(course_file, dtype = {'num_course': pd.Int64Dtype()})
     df = df.dropna(axis = 0, how = 'all').reset_index(drop=True)
     df = df.fillna(np.nan)#NaN character
