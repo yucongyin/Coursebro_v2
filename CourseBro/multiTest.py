@@ -18,12 +18,13 @@ import functools
 courses_list = []
 
 class Courses(object):
-    def __init__(self,courseName,section,term,tutr,lab):
+    def __init__(self,courseName,section,term,tutr,lab,no):
         self.courseName = courseName
         self.section = section
         self.term = term
         self.tutr = tutr
         self.lab = lab
+        self.no = no
 
 
 def stage(prof_num):
@@ -38,7 +39,7 @@ def stage(prof_num):
     #chrome_option.add_experimental_option('excludeSwitches', ['enable-logging'])
     #chrome_option.add_argument("user-data-dir=selenium")
     profile = "user-data-dir=C:\\Users\\yin00036\\AppData\\Local\\Google\\Chrome\\User Data\\Profile "+ str(prof_num)
-    print(prof_num)
+    #print(prof_num)
     chrome_option.add_argument(profile) #using stored google profile as chrome cookies
 
 
@@ -70,8 +71,9 @@ def stage(prof_num):
 
 
 
-def logInSystem(course,num):
-    driver = stage(num)
+def logInSystem(course):
+    print(course.no)
+    driver = stage(int(course.no))
     url = 'https://schedulebuilder.yorku.ca'
     driver.get(url)
     driver.maximize_window()
@@ -225,7 +227,7 @@ def main():
 
 
 if (__name__ == "__main__"):
-    multipro = multiprocessing.Pool(15)
+    multipro = multiprocessing.Pool(8)
     df = pd.read_excel('E:\Coursebro\courseList.xlsx',sheet_name='course_list')
     df = df.dropna(axis = 0, how = 'all').reset_index(drop=True)
     df = df.fillna(np.nan)#NaN character
@@ -233,9 +235,11 @@ if (__name__ == "__main__"):
 
     for c in courses:
         courses_list.append(Courses(*c))
-    for i in range(0,8):
-        multipro.apply_async(logInSystem,args=(courses_list[i],i+1))
-        #multipro.map(stage,courses_list,12)
+    
+    #for i in range(0,8):
+        #multipro.apply_async(logInSystem,args=(courses_list[i],i+1))
+        
+    multipro.map(logInSystem,courses_list,8)
     multipro.close()
     multipro.join()
 
