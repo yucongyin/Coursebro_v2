@@ -6,6 +6,8 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
+from pywintypes import com_error
+
 
 import win32com.client as wincl
 # import os
@@ -22,17 +24,26 @@ import functools
 echo = wincl.Dispatch("SAPI.SpVoice")
 echo.rate = 4 #-1
 
-chrome_option = Options()
-chrome_option.add_argument('--headless')
-chrome_option.add_argument('--disable-gpu')
-chrome_option.add_argument('log-level = 3')
-chrome_option.add_argument('window-size=1920x1080')
+
+
+def stage(prof_num):
+    chrome_option = Options()
+    chrome_option.add_argument('--headless')
+    chrome_option.add_argument('--disable-gpu')
+    chrome_option.add_argument('log-level = 3')
+    chrome_option.add_argument('window-size=1920x1080')
+    profile = "user-data-dir=C:\\Users\\yin00036\\AppData\\Local\\Google\\Chrome\\User Data\\Profile "+ str(prof_num)
+    chrome_option.add_argument(profile)
+    driver = webdriver.Chrome(executable_path="E:\\Coursebro\\chromedriver.exe", options = chrome_option)
+    return driver
+
+
 
 
 def capture(df):
     url = df.url
     num_course = df.num_course
-    browser = webdriver.Chrome(executable_path=r"E:\Coursebro\chromedriver", options = chrome_option)
+    browser = stage(int(df.no))
     browser.get(url)
     browser.maximize_window()
     current_url_str = 'https://passportyork.yorku.ca/ppylogin/ppylogin'
@@ -42,9 +53,9 @@ def capture(df):
     #when it's on login page
     if current_url == current_url_str:
         name = browser.find_element_by_id("mli")
-        name.send_keys("memorays")
+        name.send_keys("zhx1997")
         pwd = browser.find_element_by_id("password")
-        pwd.send_keys("asd65656")
+        pwd.send_keys("Niyoyo1201!!")
         element=WebDriverWait(browser,10).until(EC.element_to_be_clickable((By.NAME,"dologin")))
         browser.execute_script("arguments[0].click();", element)#click on arg[0] which is element with name "dologin"
         
@@ -75,6 +86,7 @@ def capture(df):
                 continue
             else:
                 course_name = myElem.text.split('\n')[1].split(' ')[0]
+            try:
                 for i in range(len(labels)):
                     label = labels[i]
                     idx = browser.execute_script(java_script, label)['for']
@@ -91,6 +103,8 @@ def capture(df):
                                 echo.Speak(remind_name)
                                 print(full_course_name)
                                 ava_list.append(full_course_name)
+            except com_error as e:
+                pass
 
     return ava_list
 
@@ -116,13 +130,13 @@ def capture(df):
 
 def webscraping():
     t0 = time.time()
-    course_file = 'C:/Users/Tom/Desktop/tcl/test.csv'
+    course_file = 'F:/pylib/CoursebroTest/test.csv'
     #dataframe build
     df = pd.read_csv(course_file, dtype = {'num_course': pd.Int64Dtype()})
     df = df.dropna(axis = 0, how = 'all').reset_index(drop=True)
     df = df.fillna(np.nan)#NaN character
     df = df.drop_duplicates(subset = 'url', keep = 'first')
-    out_file = 'C:/Users/Tom/Desktop/tcl/courses.txt'
+    out_file = 'F:/pylib/CoursebroTest/class.txt'
 
     len_df = df.shape[0]
     items = [df.iloc[i] for i in range(len_df)]

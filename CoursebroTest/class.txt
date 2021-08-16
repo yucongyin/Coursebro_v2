@@ -1,0 +1,4 @@
+['ADMS-2510 Term W: Section U: Remote 01  ']
+['ADMS-3351 Term F: Section C: Remote 01  ', 'ADMS-3660 Term W: Section S: Remote 01  ', 'ADMS-2500 Term F: Section N: Remote 01  ']
+['ADMS-4900 Term F: Section A: Remote 01  ', 'ADMS-4900 Term F: Section C: Blended Online and Classroom 01  ', 'ADMS-4900 Term F: Section E: Remote 01  ', 'ADMS-4900 Term F: Section H: Blended Online and Classroom 01  ', 'ADMS-4900 Term W: Section S: Lect 01  ', 'ADMS-3900 Term F: Section B: Fully Online 01  ', 'ADMS-3900 Term W: Section N: Fully Online 01  ']
+['MATH-3330 Term F: Section A: Remote 01 - Tutr 01  ', 'ECON-3440 Term F: Section D: Remote 01  ']
